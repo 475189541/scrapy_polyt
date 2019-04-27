@@ -74,7 +74,6 @@ class SpidersPolytSpider(scrapy.Spider):
         cookies = dict(map(lambda x: tuple(x.strip().rstrip(';').split('=')), Cookie))
         cookies['Hm_lvt_%s' % self.cookie_id] = int(time.time())
         cookies['Hm_lpvt_%s' % self.cookie_id] = int(time.time())
-        cookies['member'] = '27ed1d191a1eb1aae568fda5a9a6795b&&7cad114c3eb096373394ee929246cfd0'
         if hex_xor:
             cookies['acw_sc__v2'] = hex_xor
         meta = {'Cookie': cookies, 'cookiejar': cookiejar}
@@ -85,22 +84,19 @@ class SpidersPolytSpider(scrapy.Spider):
             'loginFlag': 'false'
         }
         yield scrapy.FormRequest(url=url, callback=self.parse_login, meta=meta, cookies=cookies, formdata=formdata)
-        # url = 'https://mxhdjy.polyt.cn/doLogin/getLoginUser'
-        # yield scrapy.Request(url=url, callback=self.parse_is_login, meta=meta, cookies=cookies, method='POST')
 
     def parse_login(self, response):
         cookiejar, cookies = response.meta['cookiejar'], response.meta['Cookie']
-        # SetCookie = response.headers.getlist('Set-Cookie')
-        # Cookie = map(lambda c: c.decode('utf-8').split(';')[0], SetCookie)
-        # cookie = dict(map(lambda x: tuple(x.strip().split('=')), Cookie))
-        # cookies['member'] = cookie['member']
         meta = {'Cookie': cookies, 'cookiejar': cookiejar}
         url = 'https://mxhdjy.polyt.cn/doLogin/getLoginUser'
         yield scrapy.FormRequest(url=url, callback=self.parse_is_login, meta=meta, cookies=cookies, method='POST')
 
     def parse_is_login(self, response):
         cookiejar, cookies = response.meta['cookiejar'], response.meta['Cookie']
+        Cookie = response.request.headers.getlist('Cookie')
+        print(Cookie)
         print()
+
 
 
 
