@@ -117,5 +117,5 @@ dbs
 eggs
 images
 tests
-test
-user_password
+test.py
+scrapy_polyt/user_password.py
