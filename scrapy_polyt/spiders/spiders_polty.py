@@ -5,6 +5,7 @@ import json
 import hashlib
 from urllib.parse import urlencode
 from random import sample
+from scrapy_polyt.user_password import username, password
 
 
 class SpidersPolytSpider(scrapy.Spider):
@@ -34,6 +35,8 @@ class SpidersPolytSpider(scrapy.Spider):
         self.cookie_id = 'ed7069d2834bd9d2dcff979303c93b71'
         self.key_work = ['声入人心', '娘惹艾美丽']
         self.showTime = '2019-05-11,2019-05-11'
+        self.username = username
+        self.password = password
 
     def filter_data(self, d):
         name = d.xpath('./h2/a/text()').extract_first()
@@ -113,8 +116,8 @@ class SpidersPolytSpider(scrapy.Spider):
         else:
             url = "https://mxhdjy.polyt.cn/doLogin/login"
             formdata = {
-                'userName': '17758686920',
-                'passWord': 'IYw+1j/+pSbcaUT1Kg4zqS2Jsuw=',
+                'userName': self.username,
+                'passWord': self.password,
                 'loginFlag': 'true'
             }
             meta = {'cookiejar': cookiejar}
