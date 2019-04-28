@@ -117,5 +117,5 @@ dbs
 eggs
 images
 tests
-.test.py
-.user_password.py
+test
+user_password
