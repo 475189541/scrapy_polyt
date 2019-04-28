@@ -1,13 +1,13 @@
 # scrapy_polyt
 ### 基于Scrapy的Python3.6 保利剧院抢票爬虫
 
-+ middlewares.py: 重试中间件
-+ settings.py: Scrapy默认设置
-+ spiders_polty.py: 保利爬虫程序
-+ starts.py: 调试启动文件入口
++ middlewares.py: 重试中间件。
++ settings.py: Scrapy默认设置。
++ spiders_polty.py: 保利爬虫程序。
++ starts.py: 调试启动文件入口。
 + 欢迎有能力的开发者共同维护，半年之内此项目我还会继续跟进。
 + 对喜爱音乐剧的用户(非黄牛党)提供技术支持。
-+ 问题和讨论可以发到我的邮箱475189541@qq.com
++ 问题和讨论可以发到我的邮箱475189541@qq.com。
 + 爬虫环境部署于linux环境，windows环境下的问题不予解答。
 
 ### 实现功能
