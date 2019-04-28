@@ -81,7 +81,7 @@ class SpidersPolytSpider(scrapy.Spider):
         formdata = {
             'userName': '17758686920',
             'passWord': 'IYw+1j/+pSbcaUT1Kg4zqS2Jsuw=',
-            'loginFlag': 'false'
+            'loginFlag': 'true'
         }
         yield scrapy.FormRequest(url=url, callback=self.parse_login, meta=meta, cookies=cookies, formdata=formdata)
 
@@ -94,7 +94,6 @@ class SpidersPolytSpider(scrapy.Spider):
     def parse_is_login(self, response):
         cookiejar, cookies = response.meta['cookiejar'], response.meta['Cookie']
         Cookie = response.request.headers.getlist('Cookie')
-        print(Cookie)
         print()
 
 
