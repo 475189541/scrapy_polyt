@@ -25,7 +25,7 @@ class SpidersPolytSpider(scrapy.Spider):
         self.key = '3000176000856006061501533003690027800375'
         self.base_url = 'https://mxhdjy.polyt.cn/'
         self.cookie_id = 'ed7069d2834bd9d2dcff979303c93b71'
-        self.key_work = ['声入人心']
+        self.key_work = ['声入人心', '娘惹艾美丽']
         self.showTime = '2019-05-11,2019-05-11'
 
     def filter_data(self, d):
@@ -279,7 +279,7 @@ class SpidersPolytSpider(scrapy.Spider):
                 'isRealName': isRealName, 'ticketNumber': ticketNumber, 'manageWayCode': manageWayCode,
                 'productTypeName': productTypeName, 'productSubtypeName': productSubtypeName,
                 'threaterName': threaterName, 'purchaseRestrictions': purchaseRestrictions, 'sectionId': sectionId}
-        yield scrapy.FormRequest(url=url, callback=self.parse_create, meta=meta, dont_filter=True, formdata=formdata)
+        # yield scrapy.FormRequest(url=url, callback=self.parse_create, meta=meta, dont_filter=True, formdata=formdata)
 
     def parse_create(self, response):
         title = response.xpath('//title/text()').extract_first()
