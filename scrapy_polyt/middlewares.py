@@ -6,6 +6,7 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from scrapy.contrib.downloadermiddleware.retry import RetryMiddleware
 
 
 class ScrapyPolytSpiderMiddleware(object):
@@ -101,3 +102,13 @@ class ScrapyPolytDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class ScrapyRetryMiddleware(RetryMiddleware):
+
+    def process_exception(self, request, exception, spider):
+        if isinstance(exception, self.EXCEPTIONS_TO_RETRY) and not request.meta.get('dont_retry', False):
+            spider.logger.error('超时重试')
+            return self._retry(request, exception, spider)
+
+
