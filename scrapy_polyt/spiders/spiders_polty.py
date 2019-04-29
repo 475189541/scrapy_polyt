@@ -257,6 +257,7 @@ class SpidersPolytSpider(scrapy.Spider):
 
     def parse_view_skip(self, response):
         showId = response.meta['showId']
+
         if str(response.status).startswith('2') or str(response.status).startswith('3'):
             cookiejar = response.meta['cookiejar']
             data = response.meta['data']
