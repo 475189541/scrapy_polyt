@@ -22,7 +22,7 @@ class SpidersPolytSpider(scrapy.Spider):
         'RETRY_ENABLED': True,
         'RETRY_TIMES': 10000,
         'DOWNLOAD_TIMEOUT': 1,
-        # 'DOWNLOAD_DELAY ': 0.2,
+        'DOWNLOAD_DELAY ': 0.5,
         'LOG_LEVEL': 'WARNING'
 
         }
@@ -33,7 +33,7 @@ class SpidersPolytSpider(scrapy.Spider):
         self.key = '3000176000856006061501533003690027800375'
         self.base_url = 'https://mxhdjy.polyt.cn/'
         self.cookie_id = 'ed7069d2834bd9d2dcff979303c93b71'
-        self.key_work = ['声入人心', '娘惹艾美丽']
+        self.key_work = ['声入人心']
         self.showTime = '2019-05-11,2019-05-11'
         self.username = username
         self.password = password
