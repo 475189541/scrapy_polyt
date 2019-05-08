@@ -21,8 +21,7 @@ class SpidersPolytSpider(scrapy.Spider):
         'CONCURRENT_REQUESTS': 100,
         'RETRY_ENABLED': True,
         'RETRY_TIMES': 10000,
-        'DOWNLOAD_TIMEOUT': 1,
-        'DOWNLOAD_DELAY ': 0.5,
+        'DOWNLOAD_TIMEOUT': 5,
         'LOG_LEVEL': 'WARNING'
 
         }
@@ -210,6 +209,8 @@ class SpidersPolytSpider(scrapy.Spider):
             sign = response.meta['sign']
             sectionId = datas['data']['sectionId']
             seat_list = list(filter(lambda f: f, map(lambda x: x if x['sst']['name'] != '已售' else None, datas['data']['seatList'])))
+            self.logger.warning('剩余票数：　%s' % len(seat_list))
+            self.logger.warning(json.dumps(seat_list, ensure_ascii=False))
             seat = sample(seat_list, 1)[0]
             priceList = list(filter(lambda f: f if f['ticketPriceId'] == seat['pid'] else None, datas['data']['priceList']))
             price_data = {"data": [{
@@ -232,8 +233,10 @@ class SpidersPolytSpider(scrapy.Spider):
                       "sign": sign,
                       "manageWayCode": manageWayCode
                     }}
+            param = json.dumps(price_data, ensure_ascii=False)
+            self.logger.warning(param)
             formdata = {
-                "param": json.dumps(price_data, ensure_ascii=False),
+                "param": param,
                 "sign": sign
             }
             url = 'https://mxhdjy.polyt.cn/submitOrderSeat'
@@ -306,8 +309,8 @@ class SpidersPolytSpider(scrapy.Spider):
             url = 'https://mxhdjy.polyt.cn/create'
             meta = {'cookiejar': cookiejar, 'data': data, 'showId': showId, 'placeId': placeId, 'venueId': venueId,
                     'projectId': projectId, 'showTime': showTime, 'theaterId': theaterId, 'productId': productId,
-                    'isRealName': isRealName, 'ticketNumber': ticketNumber, 'manageWayCode': manageWayCode,
-                    'productTypeName': productTypeName, 'productSubtypeName': productSubtypeName,
+                    'isRealName': isRealName, 'ticketNumber': ticketNumber, 'manageWayCode': manageWayCode, 'sign': response.meta['sign'],
+                    'productTypeName': productTypeName, 'productSubtypeName': productSubtypeName, 'formdata': formdata,
                     'threaterName': threaterName, 'purchaseRestrictions': purchaseRestrictions, 'sectionId': sectionId}
             yield scrapy.FormRequest(url=url, callback=self.parse_create, meta=meta, dont_filter=True, formdata=formdata)
             self.logger.warning('订单数据提交成功，开始创建订单')
@@ -324,9 +327,14 @@ class SpidersPolytSpider(scrapy.Spider):
         if title and title.strip() == '订单支付页':
             self.logger.warning('订单创建成功')
         else:
-            self.logger.warning('订单创建失败')
-
-
+            showId = response.meta['showId']
+            # yield scrapy.FormRequest(url=response.url, callback=self.parse_create, meta=response.meta, dont_filter=True, formdata=formdata)
+            formdata = {
+                'showId': showId,
+            }
+            url = 'https://mxhdjy.polyt.cn/chooseSeat/openArea'
+            yield scrapy.FormRequest(url=url, callback=self.parse_open_area, meta=response.meta, formdata=formdata, dont_filter=True)
+            self.logger.warning('订单创建失败，开始重试')
 
 
 
